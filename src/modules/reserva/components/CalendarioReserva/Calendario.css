@@ -1,0 +1,48 @@
+/* Mata o float e força o layout flexível */
+.tcc-calendar-container .react-datepicker {
+  display: flex !important;
+  border: none !important;
+  background-color: transparent !important;
+  font-family: inherit !important;
+}
+
+.tcc-calendar-container .react-datepicker__months {
+  display: flex !important;
+  flex-wrap: nowrap !important; /* Força os meses a ficarem lado a lado */
+  gap: 20px !important;
+  background-color: white !important;
+}
+
+.tcc-calendar-container .react-datepicker__month-container {
+  float: none !important; /* ESSENCIAL: Mata o float que sobrepõe os meses */
+  display: block !important;
+}
+
+.tcc-calendar-container .react-datepicker__header {
+  background-color: white !important;
+  border-bottom: none !important;
+  padding-top: 15px !important;
+}
+
+/* Tamanho GIGANTE para Telas Grandes (Desktop) */
+@media (min-width: 1024px) {
+  .tcc-calendar-container .react-datepicker__day-name, 
+  .tcc-calendar-container .react-datepicker__day {
+    width: 3.5rem !important;      /* Aumenta o quadrado do dia */
+    line-height: 3.5rem !important; /* Centraliza o número */
+    margin: 0.2rem !important;
+    font-size: 1.1rem !important;
+  }
+
+  .tcc-calendar-container .react-datepicker__current-month {
+    font-size: 1.4rem !important;
+    margin-bottom: 10px !important;
+  }
+}
+
+/* Ajuste para Mobile */
+@media (max-width: 1023px) {
+  .tcc-calendar-container .react-datepicker__months {
+    flex-direction: column !important;
+  }
+}

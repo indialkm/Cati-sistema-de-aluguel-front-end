@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+:root {
+  /* Cores de Alerta/Destaque */
+  --color-accent-yellow: #facd05;
+  --color-accent-orange: #fa9105;
+
+  /* Paleta de Azuis (Marca) */
+  --color-primary-light: #0554fa;
+  --color-primary-main: #15489d;
+  --color-primary-dark: #3a4a6e; /* Ajustei o tom baseado no seu quadrado 5 */
+
+  /* Cor de Suporte/Neutro */
+  --color-support-olive: #7a7040;
+
+  /* Neutros padrões para o TCC */
+  --color-white: #ffffff;
+  --color-black: #1a1a1a;
+}
