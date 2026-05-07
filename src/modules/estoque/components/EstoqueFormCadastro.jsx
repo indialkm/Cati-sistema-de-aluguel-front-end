@@ -6,7 +6,10 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
         nome: '',
         descricao: '',
         precoBase: '',
-        categoria: ''
+        categoria: '',
+        largura: '',
+        altura: '',
+        tipoEstoque: ''
     });
 
     const [arquivosSelecionados, setArquivosSelecionados] = useState([]);
@@ -45,8 +48,8 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        
-        // Validação básica de campos obrigatórios do Java
+
+
         if (!formData.nome || !formData.categoria) {
             setAlerta('Nome e Categoria são obrigatórios.');
             return;
@@ -54,7 +57,7 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
 
         setAlerta(null);
 
-        // PREPARAÇÃO DO FORM DATA
+
         const data = new FormData();
 
         // Criamos o objeto exatamente como o Record/DTO Java espera
@@ -62,13 +65,16 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
             nome: formData.nome,
             descricao: formData.descricao || null,
             categoria: formData.categoria,
-            // Convertemos string do input para número para não dar erro de tipo no Java
-            precoBase: formData.precoBase ? parseFloat(formData.precoBase) : null
+            precoBase: formData.precoBase ? parseFloat(formData.precoBase) : null,
+            largura: formData.largura,
+            altura: formData.altura,
+            tipoEstoque: formData.tipoEstoque
+
         };
 
-        // Adicionamos a parte do JSON (o @RequestPart("request") do Java)
-        data.append('request', new Blob([JSON.stringify(payloadJava)], { 
-            type: "application/json" 
+
+        data.append('request', new Blob([JSON.stringify(payloadJava)], {
+            type: "application/json"
         }));
 
         // Adicionamos os arquivos (o @RequestPart("arquivos") do Java)
@@ -137,6 +143,7 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
                     </div>
                 </div>
 
+
                 {/* CATEGORIA */}
                 <div>
                     <label className={labelStyle}>Categoria</label>
@@ -154,6 +161,61 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
                     </select>
                 </div>
             </div>
+
+
+            <div>
+                <label className={labelStyle}>Altura (m)</label>
+                <div className="relative">
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="altura"
+                        value={formData.altura || ''}
+                        onChange={handleChange}
+                        placeholder="0.00"
+                        className={inputStyle}
+                        disabled={isLoading}
+                    />
+                    <span className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 font-medium">m</span>
+                </div>
+            </div>
+
+            {/* LARGURA */}
+            <div>
+                <label className={labelStyle}>Largura (m)</label>
+                <div className="relative">
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="largura"
+                        value={formData.largura || ''}
+                        onChange={handleChange}
+                        placeholder="0.00"
+                        className={inputStyle}
+                        disabled={isLoading}
+                    />
+                    <span className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 font-medium">m</span>
+                </div></div>
+
+
+
+
+            {/* TipoEstoque */}
+            <div>
+                <label className={labelStyle}>Tipo de medida</label>
+                <select
+                    name="tipoEstoque"
+                    value={formData.tipoEstoque}
+                    onChange={handleChange}
+                    className={inputStyle}
+                    disabled={isLoading}
+                >
+                    <option value="">Selecione...</option>
+                    <option value="METRAGEM">Metragem</option>
+                    <option value="Unitario">Unitario</option>
+                </select>
+            </div>
+
 
             {/* DRAG & DROP */}
             <div>
@@ -207,7 +269,7 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
                     {isLoading ? 'Enviando...' : 'Confirmar Cadastro'}
                 </button>
             </div>
-        </form>
+        </form >
     );
 };
 

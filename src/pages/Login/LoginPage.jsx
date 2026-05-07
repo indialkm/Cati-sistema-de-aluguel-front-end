@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // Certifique-se que o caminho está correto
+import { useAuth } from '../../context/AuthContext';
 import tendaImg from '../../assets/image/tenda08.jpeg';
 
 export function LoginForm() {

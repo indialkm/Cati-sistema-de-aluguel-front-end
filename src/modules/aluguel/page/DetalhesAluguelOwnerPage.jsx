@@ -12,7 +12,7 @@ const DetalhesAluguelOwnerPage = () => {
     // Estados para controlar o Modal de Checklist
     const [modalAberto, setModalAberto] = useState(false);
     const [tipoAcao, setTipoAcao] = useState(''); 
-
+    
   const {
         aluguelSelecionado,
         loading,

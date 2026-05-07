@@ -18,7 +18,6 @@ export function AuthProvider({ children }) {
                     const parsedUser = JSON.parse(recoveredUser);
                     setUser(parsedUser);
                     console.log(userId);
-                    // Configura o token nas requisições caso a página seja atualizada
                     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 } catch (e) {
                     console.error("Erro ao processar dados de sessão:", e);
@@ -34,7 +33,7 @@ export function AuthProvider({ children }) {
     const login = async (username, password) => {
         try {
         
-            const response = await api.post('/login', { username, password });
+            const response = await api.post('/auth/login', { username, password });
             
             const { token, userData } = response.data; 
 
@@ -62,10 +61,18 @@ export function AuthProvider({ children }) {
         setUser(null);
     };
 
-    // Refatorado para lidar com o array de roles que o Java envia
+    const estaLogado = () => {
+        if (user !== null && user.id !== undefined) {
+            console.log(` O user id é: ${user.id}`);
+            return true;
+        } else {
+            return false;
+    }
+    };
+    
     const hasRole = (roleRequired) => {
         if (!user || !user.role) return false;
-        return user.role.includes(roleRequired);
+        return user.role.some(r => r.toUpperCase() === roleRequired.toUpperCase());
     };
 
     const updateUserData = (newData) => {
@@ -82,7 +89,7 @@ export function AuthProvider({ children }) {
             logout, 
             hasRole, 
             updateUserData,
-            signed: !!user, 
+            estaLogado,
             loading 
         }}>
             {children}

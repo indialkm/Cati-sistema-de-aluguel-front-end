@@ -5,35 +5,41 @@ import {
   MagnifyingGlassIcon,
   ShoppingBagIcon,
   UserCircleIcon,
-  HeartIcon
+  HeartIcon,
+  ArrowRightOnRectangleIcon 
 } from '@heroicons/react/24/outline';
-import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { signed, loading, hasRole } = useAuth();
+  
+  const { estaLogado, loading, hasRole, logout } = useAuth();
   const navigate = useNavigate();
+  const signed = estaLogado();
 
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Nossas solução', href: '/category' },
-    { name: 'Collections', href: '/collections' },
-    { name: 'Contact Us', href: '/contact' },
+    { name: 'Nossa história', href: '/category' },
+    { name: 'Nossas soluções', href: '/collections' },
+    { name: 'Nosso contato', href: '/contact' },
   ];
 
+
+  const handleLogout = () => {
+    logout(); 
+    navigate('/'); 
+  };
+
   const handleUserClick = () => {
-    if (loading) return;
-    if (!signed) {
+    if (loading === true) return;
+    if (signed === false) {
       navigate('/login');
     } else {
-
       if (hasRole('OWNER')) {
-        navigate('/admin/dashboard');
+        navigate('/admin/dashboard'); 
       } else {
-        navigate('/minha-conta');
+        navigate('/dash-client');   
       }
     }
   };
@@ -63,7 +69,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* ICONS (Search, Heart, Cart, User) */}
+          {/* ICONS */}
           <div className="hidden md:flex items-center space-x-5">
             <button className="hover:text-gray-300 transition-colors">
               <MagnifyingGlassIcon className="h-6 w-6" />
@@ -71,38 +77,46 @@ export default function Navbar() {
             <button className="hover:text-gray-300 transition-colors">
               <HeartIcon className="h-6 w-6" />
             </button>
-            {/* LINK DO CARRINHO */}
+            
             <Link to="/carrinho" className="relative hover:text-gray-300 transition-colors">
               <ShoppingBagIcon className="h-6 w-6" />
               <span className="absolute -top-1 -right-1 bg-pink-500 text-[10px] rounded-full h-4 w-4 flex items-center justify-center">
                 0
               </span>
-            </Link >
+            </Link>
+
             <button
               onClick={handleUserClick}
               disabled={loading} 
               className={`hover:text-gray-300 transition-colors bg-transparent border-none cursor-pointer ${loading ? 'opacity-50' : ''}`}>
               <UserCircleIcon className="h-6 w-6" />
             </button>
+
+            {/* --- BOTÃO DE SAIR (Apenas se estiver logado) --- */}
+            {signed === true && (
+              <button 
+                onClick={handleLogout}
+                title="Sair"
+                className="hover:text-red-400 transition-colors text-red-500"
+              >
+                <ArrowRightOnRectangleIcon className="h-6 w-6" />
+              </button>
+            )}
           </div>
 
           {/* MOBILE MENU BUTTON */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md hover:bg-gray-800 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-md hover:bg-gray-800"
             >
-              {isOpen ? (
-                <XMarkIcon className="block h-8 w-8" aria-hidden="true" />
-              ) : (
-                <Bars3Icon className="block h-8 w-8" aria-hidden="true" />
-              )}
+              {isOpen ? <XMarkIcon className="h-8 w-8" /> : <Bars3Icon className="h-8 w-8" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* MOBILE MENU (DROPDOWN) */}
+      {/* MOBILE MENU */}
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-[#0A0F1C] border-t border-gray-800`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navLinks.map((link) => (
@@ -115,12 +129,17 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          {/* ICONS MOBILE */}
+          
           <div className="flex justify-around py-4 border-t border-gray-800 mt-2">
             <MagnifyingGlassIcon className="h-6 w-6" />
             <HeartIcon className="h-6 w-6" />
             <ShoppingBagIcon className="h-6 w-6" />
-            <UserCircleIcon className="h-6 w-6" />
+            <UserCircleIcon className="h-6 w-6" onClick={handleUserClick} />
+            
+            {/* SAIR NO MOBILE */}
+            {signed === true && (
+              <ArrowRightOnRectangleIcon className="h-6 w-6 text-red-500" onClick={handleLogout} />
+            )}
           </div>
         </div>
       </div>

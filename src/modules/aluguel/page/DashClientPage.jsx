@@ -4,17 +4,23 @@ import AbasNavegacao from '../components/AbasNavegacao';
 import ListaPedidos from '../components/ListaPedidos';
 import usePedido from '../../pedido/hooks/usePedido';
 import HistoricoAba from '../../historico/components/HistoricoAba';
+import { useAuth } from '../../../context/AuthContext';
 
 export function DashClientPage() {
     const [abaAtiva, setAbaAtiva] = useState('pedidos');
-    const {pedidos, loading, erro, listarMeusPedidos, paginacao } = usePedido();
+    const { pedidos, loading, erro, listarMeusPedidos, paginacao } = usePedido();
     const [larguraJanela, setLarguraJanela] = useState(window.innerWidth);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const { estaLogado, hasRole } = useAuth();
+    const signed = estaLogado();
+
 
     useEffect(() => {
         const handleResize = () => setLarguraJanela(window.innerWidth);
         window.addEventListener('resize', handleResize);
         listarMeusPedidos(0, 10);
-        
+
         return () => window.removeEventListener('resize', handleResize);
     }, [listarMeusPedidos]);
 
@@ -23,7 +29,7 @@ export function DashClientPage() {
     return (
         <div style={styles.page}>
             <Navbar />
-            
+
             <AbasNavegacao abaAtiva={abaAtiva} setAbaAtiva={setAbaAtiva} />
 
             <main style={{
@@ -78,6 +84,19 @@ export function DashClientPage() {
                         )}
                     </div>
                 )}
+
+                {signed && hasRole('ROLE_OWNER') && (
+                    <div style={{ marginTop: '30px', textAlign: 'center' }}>
+                        <button
+                            onClick={() => window.location.href = '/exibir-estoque'}
+                            className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all flex items-center gap-2 mx-auto"
+                        >
+                            <span className="h-2 w-2 bg-white rounded-full animate-pulse"></span>
+                            Acessar Painel de Gerenciamento
+                        </button>
+                    </div>
+                )}
+
             </main>
         </div>
     );

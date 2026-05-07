@@ -37,62 +37,76 @@ export function useEstoque() {
         }
     };
 
-    const obterDetalhes = async (id) => {
+    const atualizarParcial = async (id) => {
         setLoading(true);
         setErro(null);
-        try {
-            const dados = await estoqueService.obterDetalhes(id);
-            setItemSelecionado(dados);
-        } catch (e) {
-            setErro("Detalhes não encontrados.");
-        } finally {
-            setLoading(false);
-        }
-    };
+        try{
+         const dados = await estoqueService.atualizarParcial(id);
+        setItemSelecionadodo(dados);
+        }catch (e) {
+        setErro("Não foi possível atualizar dados")
+    } finally {
+        setLoading(false)
+    }
 
-    const equipamentosPorEstoque = async (id, pagina = 0) => {
-        setLoading(true);
-        setErro(null);
-        try {
+};
 
-            const response = await estoqueService.pesquisarPorEstoque(id, pagina);
-            setItens(response.content);
+const obterDetalhes = async (id) => {
+    setLoading(true);
+    setErro(null);
+    try {
+        const dados = await estoqueService.obterDetalhes(id);
+        setItemSelecionado(dados);
+    } catch (e) {
+        setErro("Detalhes não encontrados.");
+    } finally {
+        setLoading(false);
+    }
+};
 
-        } catch (e) {
-            setErro("Não foi possível carregar os equipamentos deste estoque.");
-            console.error(e);
-        } finally {
-            setLoading(false);
-        }
-    };
+const equipamentosPorEstoque = async (id, pagina = 0) => {
+    setLoading(true);
+    setErro(null);
+    try {
 
-    const excluirEstoque = async (id) => {
-        setLoading(true);
-        setErro(null);
-        try {
+        const response = await estoqueService.pesquisarPorEstoque(id, pagina);
+        setItens(response.content);
 
-            const response = await estoqueService.excluir(id);
-            setItens(response.content);
+    } catch (e) {
+        setErro("Não foi possível carregar os equipamentos deste estoque.");
+        console.error(e);
+    } finally {
+        setLoading(false);
+    }
+};
 
-        } catch (e) {
-            setErro("Não foi possível carregar os equipamentos deste estoque.");
-            console.error(e);
-        } finally {
-            setLoading(false);
-        }
-    };
+const excluirEstoque = async (id) => {
+    setLoading(true);
+    setErro(null);
+    try {
 
-    return {
-        itens,
-        itemSelecionado,
-        loading,
-        erro,
-        excluirEstoque,
-        equipamentosPorEstoque,
-        buscarTodos,
-        cadastrar,
-        obterDetalhes
-    };
+        const response = await estoqueService.excluir(id);
+        setItens(response.content);
+
+    } catch (e) {
+        setErro("Não foi possível carregar os equipamentos deste estoque.");
+        console.error(e);
+    } finally {
+        setLoading(false);
+    }
+};
+
+return {
+    itens,
+    itemSelecionado,
+    loading,
+    erro,
+    excluirEstoque,
+    equipamentosPorEstoque,
+    buscarTodos,
+    cadastrar,
+    obterDetalhes
+};
 }
 
 export default useEstoque;

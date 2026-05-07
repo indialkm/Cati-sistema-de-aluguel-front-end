@@ -31,6 +31,10 @@ export const estoqueService = {
         return response.data;
     },
 
+    atualizarParcial : async (id) => {
+        const response = await api.patch(`/estoque/atualizar/${id}`)
+        return response.data;
+    },
 
     equipamentosPorEstoque: async (idEstoque, page = 0, size = 10) => {
         const response = await api.get(`/estoques/${idEstoque}/equipamentos`, {

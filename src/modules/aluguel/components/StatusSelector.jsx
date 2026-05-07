@@ -4,8 +4,8 @@ import { Loader2, CheckCircle2 } from 'lucide-react'; // Sugestão: use lucide-r
 const StatusSelector = ({ statusAtual, onStatusChange, loading }) => {
     
     const STATUS_CONFIG = {
-        'EM_MONTAGEM': { label: 'Iniciar Montagem', acao: 'MONTAGEM', cor: 'bg-[#f27405]' },
-        'CONFERENCIA': { label: 'Confirmar Entrega', acao: 'CONFERENCIA', cor: 'bg-[#007bff]' },
+        'CONFERENCIA': { label: 'Em conferência', acao: 'CONFERENCIA', cor: 'bg-[#007bff]' },
+        'EM_MONTAGEM': { label: 'Em montagem', acao: 'MONTAGEM', cor: 'bg-[#f27405]' },
         'AVARIADO':    { label: 'Relatar Avaria', acao: 'AVARIADO', cor: 'bg-[#dc3545]' },
         'FINALIZADO':  { label: 'Finalizar Aluguel', acao: 'FINALIZADO', cor: 'bg-[#28a745]' }
     };

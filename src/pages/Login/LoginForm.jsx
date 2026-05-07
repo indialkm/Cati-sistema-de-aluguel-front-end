@@ -9,23 +9,21 @@ export default function LoginForm() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-        // Envia igual ao Postman
-        const response = await api.post('login', credentials); 
+      
+        const response = await api.post('/auth/login', credentials); 
         
-        // 1. EXTRAIR O TOKEN (Verifique se no seu Java o campo chama 'token' ou 'accessToken')
+      
         const token = response.data.token; 
 
         if (token) {
             // 2. SALVAR NO NAVEGADOR
             localStorage.setItem('token', token);
             
-            // Opcional: salvar dados do usuário para não dar erro de "null" depois
+           
             localStorage.setItem('login', JSON.stringify(response.data.user));
 
             console.log("Login realizado e token salvo!");
-            
-            // 3. REDIRECIONAR
-            // Se o usuário veio do carrinho, ele deve voltar para lá
+          
             const origin = location.state?.from?.pathname || '/';
             navigate(origin);
         }
