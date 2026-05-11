@@ -180,7 +180,8 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
                 </div>
             </div>
 
-            {/* LARGURA */}
+
+            
             <div>
                 <label className={labelStyle}>Largura (m)</label>
                 <div className="relative">
@@ -195,10 +196,8 @@ const EstoqueFormCadastro = ({ onSubmit, isLoading, itemEditando }) => {
                         disabled={isLoading}
                     />
                     <span className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 font-medium">m</span>
-                </div></div>
-
-
-
+                </div>
+            </div>
 
             {/* TipoEstoque */}
             <div>

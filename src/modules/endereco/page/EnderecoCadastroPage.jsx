@@ -8,11 +8,14 @@ import FormularioEndereco from '../components/FormularioEndereco';
 import api from '../../../services/api';
 
 export default function EnderecoCadastroPage() {
+
+  
   const { enderecos, loading, listarMeusEnderecos, adicionarLogado } = useEndereco();
   const [enderecoSelecionado, setEnderecoSelecionado] = useState(null);
   const [exibirForm, setExibirForm] = useState(false);
-  
+
   const location = useLocation();
+  console.log("STATE CHEGANDO NA TELA DE ENDEREÇO:", location.state);
   const navigate = useNavigate();
   const { idReserva } = location.state || {};
 
@@ -22,7 +25,7 @@ export default function EnderecoCadastroPage() {
   }, [listarMeusEnderecos]);
 
   useEffect(() => {
-   
+
     if (!loading && !enderecoSelecionado) {
       if (enderecos.length === 0) {
         setExibirForm(true);
@@ -30,7 +33,7 @@ export default function EnderecoCadastroPage() {
         setExibirForm(false);
       }
     }
-  }, [enderecos, loading]); 
+  }, [enderecos, loading]);
 
   const handleSalvarNovo = async (dados) => {
     const salvo = await adicionarLogado(dados);
@@ -40,18 +43,36 @@ export default function EnderecoCadastroPage() {
       listarMeusEnderecos();
     }
   };
+const handleFinalizar = async () => {
 
-  const handleFinalizar = async () => {
-    try {
-      const res = await api.post('/carrinho/adicionar', { 
-        idReserva, 
-        idEndereco: enderecoSelecionado.id 
-      });
-      navigate('/carrinho', { state: { idCarrinho: res.data.id } });
-    } catch (err) {
-      console.log("Erro ao processar pedido.");
-    }
-  };
+  const reservaId = idReserva; 
+  const enderecoId = enderecoSelecionado?.id || enderecoSelecionado?.idEndereco;
+
+ 
+  console.log("=== ENVIANDO PARA O CARRINHO ===");
+  console.log("UUID Reserva:", reservaId);
+  console.log("UUID Endereço:", enderecoId);
+
+  
+  if (!reservaId || !enderecoId) {
+    alert("Erro: Dados de reserva ou endereço ausentes.");
+    return;
+  }
+
+  try {
+  
+    const res = await api.post('/carrinho/adicionar', {
+      idReserva: reservaId,
+      idEndereco: enderecoId
+    });
+
+    console.log("Sucesso ao adicionar ao carrinho:", res.data);
+    navigate('/carrinho', { state: { idCarrinho: res.data.id } });
+  } catch (err) {
+    console.error("Erro no Back-end:", err.response?.data); 
+    alert("Erro ao processar no servidor. Verifique se o formato do UUID é aceite.");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
@@ -62,8 +83,8 @@ export default function EnderecoCadastroPage() {
         </header>
 
         {/* 1. Lista de Endereços Existentes */}
-        <ListaEnderecos 
-          enderecos={enderecos} 
+        <ListaEnderecos
+          enderecos={enderecos}
           selecionado={enderecoSelecionado}
           aoSelecionar={(end) => {
             setEnderecoSelecionado(end);
@@ -73,7 +94,7 @@ export default function EnderecoCadastroPage() {
 
         {/* 2. Alternador para novo endereço */}
         <div className="mb-6 flex justify-center">
-          <button 
+          <button
             onClick={() => {
               setExibirForm(!exibirForm);
               setEnderecoSelecionado(null);
@@ -92,7 +113,7 @@ export default function EnderecoCadastroPage() {
         {/* 4. Botão Final (Sempre visível se houver seleção) */}
         {enderecoSelecionado && (
           <div className="mt-12 flex justify-center">
-            <button 
+            <button
               onClick={handleFinalizar}
               className="w-full max-w-md bg-orange-500 hover:bg-orange-600 text-white font-extrabold py-5 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-xl animate-bounce-short"
             >

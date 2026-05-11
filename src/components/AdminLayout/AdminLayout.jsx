@@ -39,7 +39,7 @@ const AdminLayout = ({ children }) => {
 
       {/* MODAL DE ÁREA RESTRITA */}
       {showModal === true && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-999 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="bg-white p-8 rounded-lg shadow-2xl border-t-4 border-red-600 max-w-sm text-center">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Acesso Negado!</h2>
             <p className="text-gray-600 mb-4">

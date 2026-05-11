@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-import Vitrine from "../pages/public/Vitrine/Vitrine.jsx";
+import Vitrine from "../modules/vitrine/Vitrine.jsx";
 import Login from '../pages/Login/LoginPage.jsx';
 import CadastroEstoquePage from '../modules/estoque/pages/CadastroEstoquePage.jsx';
 import DetalhesProdutoPage from '../modules/estoque/pages/DetalhesProdutoPage.jsx';
@@ -21,12 +21,15 @@ import ListaAlugueisPedidoOwner from '../modules/aluguel/page/ListaAluguelPedido
 import DetalhesAluguelOwnerPage from '../modules/aluguel/page/DetalhesAluguelOwnerPage.jsx';
 import TesteService from '../modules/aluguel/service/TesteService.jsx';
 import PaginaDiagnostico from '../modules/historico/components/PaginaDiagnostico.jsx';
+import CadastrarUsuario from '../modules/user/pages/CadastrarUsuario.jsx';
+import EstoquePage from '../modules/estoque/pages/EstoquePage.jsx';
 
 export const routesConfig = [
   // --- ROTAS PÚBLICAS ---
   { path: "/", element: <Vitrine /> },
   { path: "/login", element: <Login /> },
   { path: "/detalhes/:id", element: <DetalhesProdutoPage /> },
+  { path: "/estoque", element: <EstoquePage /> },
 
 
   // --- FLUXO DE COMPRA/RESERVA ---
@@ -37,6 +40,7 @@ export const routesConfig = [
   { path: "/sucesso", element: <SucessoPage /> },
 
   // --- ÁREA DO CLIENTE ---
+  { path: "/cadastrar", element: <CadastrarUsuario/>},
   { path: "/dash-client", element: <DashClientPage /> },
   { path: "/pedido/:id", element: <PedidoPage /> },
   { path: "/lista-alugueis/:id", element: <AlugueisPorPedidoPage /> },
